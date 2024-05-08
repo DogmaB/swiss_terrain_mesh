@@ -3,6 +3,7 @@ Simple functions to acquire vertices/triangles/open3d-mesh from Swiss terrain xy
 
 
 Demo: getting vertices/triangles/open3d-mesh of ETH-HG building
+test
   1. Download xyz-file: https://data.geo.admin.ch/ch.swisstopo.swisssurface3d-raster/swisssurface3d-raster_2018_2683-1247/swisssurface3d-raster_2018_2683-1247_0.5_2056_5728.xyz.zip
   2. For getting vertices and triangles:
         vertices,triangles = acquire_swiss_terrain.loading_swiss_terrain(
