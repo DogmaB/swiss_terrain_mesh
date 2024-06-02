@@ -16,7 +16,8 @@ Testing: getting vertices/triangles/open3d-mesh of ETH-HG building
            resolution=0.5  
          )
         ```
-  4. For getting open3d triangle mesh:
+  4. For getting open3d triangle mesh and visualizing:
         ```
         terrain_o3d_mesh = acquire_swiss_terrain.get_o3d_mesh_from_v_and_t(vertices,triangles)
+        o3d.visualization.draw_geometries([terrain_o3d_mesh], window_name='Demo ETH HG', width=800, height=600, left=50, top=50, point_show_normal=True, mesh_show_wireframe=True, mesh_show_back_face=True,)
         ```
