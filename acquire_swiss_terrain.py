@@ -21,7 +21,7 @@ def loading_swiss_terrain(
         start_south: (int): y-coordinate of south edge (about coordinate definition: Download site -> Selection by rectangle -> Rectangle coordinates)
         map_size_x: (int): x-length of terrain rectangle 
         map_size_y: (int): y-length of terrain rectangle
-        resolution: (float): resolution of original xyz-file. Attention: In order to maintain 
+        resolution (int): resolution of the downloaded terrain file (0.5 or 2.0)
 
     Returns:
         vertices (numpy.ndarray): terrain vertices array with shape: (number of points, 3)
@@ -40,8 +40,13 @@ def loading_swiss_terrain(
         x = float(line.split()[0])
         y = float(line.split()[1])
         z = float(line.split()[2])
-        if x > start_west and x < (start_west + map_size_x) and y > start_south and y < (start_south + map_size_y):
-            vertices = np.append(vertices,np.array([[np.floor((x-start_west)/resolution),np.floor((y-start_south)/resolution),z/resolution]]),axis=0)
+        point_x_in_limit = x > start_west and x < (start_west + map_size_x)
+        point_y_in_limit = y > start_south and y < (start_south + map_size_y)
+        if point_x_in_limit and point_y_in_limit:
+            if resolution == 0.5:
+                x -= 0.25
+                y -= 0.25
+            vertices = np.append(vertices,np.array([[x-start_west,y-start_south,z]]),axis=0)
 
     vertices = np.delete(vertices,0,axis=0)
     
