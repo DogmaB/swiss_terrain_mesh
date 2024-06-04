@@ -29,26 +29,18 @@ def loading_swiss_terrain(
 
     '''
 
-    num_lines = sum(1 for _ in open(file_path + file_name))
+    vertices_raw = np.loadtxt(file_path + file_name, skiprows=1)
 
-    xyz = open(file_path + file_name)
+    in_range_x = (vertices_raw[:,0]>start_west) & (vertices_raw[:,0]<(start_west+map_size_x))
+    in_range_y = (vertices_raw[:,1]>start_south) & (vertices_raw[:,1]<(start_south+map_size_y))
+    in_range = in_range_x & in_range_y
 
-    line = xyz.readline()
-    vertices = np.array([[0,0,0]])
-    for n in range(num_lines-1):
-        line = xyz.readline()
-        x = float(line.split()[0])
-        y = float(line.split()[1])
-        z = float(line.split()[2])
-        point_x_in_limit = x > start_west and x < (start_west + map_size_x)
-        point_y_in_limit = y > start_south and y < (start_south + map_size_y)
-        if point_x_in_limit and point_y_in_limit:
-            if resolution == 0.5:
-                x -= 0.25
-                y -= 0.25
-            vertices = np.append(vertices,np.array([[x-start_west,y-start_south,z]]),axis=0)
+    vertices = vertices_raw[in_range,:]
+    vertices[:,0] -= start_west
+    vertices[:,1] -= start_south
 
-    vertices = np.delete(vertices,0,axis=0)
+    if resolution == 0.5:
+        vertices[:,:2] -= 0.25
     
     tri = Triangulation(vertices[:,0],vertices[:,1])
     triangles = tri.triangles
